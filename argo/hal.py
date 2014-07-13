@@ -23,7 +23,6 @@ class Link(schema.Attr):
         :param type: Its value is a string used as a hint to indicate the media type expected when dereferencing
                            the target resource.
         """
-
         if not types.Type.is_type(attr_type):
 
             if attr_type is not None:
@@ -95,7 +94,7 @@ class Curie(object):
         :param href: Curie link href value.
         :param templated: Is this curie link templated.
         :param type: Its value is a string used as a hint to indicate the media type expected when dereferencing
-                           the target resource.
+                     the target resource.
         """
         self.name = name
         self.href = href

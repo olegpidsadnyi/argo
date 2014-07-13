@@ -7,12 +7,12 @@ class Type(object):
 
     @classmethod
     def serialize(cls, value):
-        """Serialization of value."""
+        """Serialization of the value."""
         return value
 
     @classmethod
     def deserialize(cls, value):
-        """Desirialization of value."""
+        """Deserialization of the value."""
         return value
 
     @staticmethod
@@ -24,12 +24,14 @@ class Type(object):
 
 
 class List(Type):
+
     """List type for Argo schema attribute."""
 
     def __init__(self, item_type=None):
+        """Create a new List."""
         super(List, self).__init__()
         self.item_type = item_type or Type
 
-    def serialize(self, value):
+    def serialize(self, value, **kwargs):
         """Overrided serialize for returning list of value's items."""
-        return [self.item_type.serialize(val) for val in value]
+        return [self.item_type.serialize(val, **kwargs) for val in value]

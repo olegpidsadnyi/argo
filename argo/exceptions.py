@@ -5,7 +5,7 @@ import json
 
 class ValidationError(Exception):
 
-    """It will be raised when validation will be failed."""
+    """Validation failed."""
 
     def __init__(self, errors, attr=None):
         self.attr = attr
@@ -15,11 +15,11 @@ class ValidationError(Exception):
             self.errors = [errors]
 
     def to_dict(self):
-        """Return a dictionary representation of the error.
+        """Dictionary representation of the error.
 
-        Keys:
-        - attr: Attribute which contains the error, or "<root>" if it refers to the schema root.
-        - errors: A list of dictionary representations of the errors.
+        :return: A dict with the keys:
+            - attr: Attribute which contains the error, or "<root>" if it refers to the schema root.
+            - errors: A list of dictionary representations of the errors.
         """
         def exception_to_dict(e):
             try:
