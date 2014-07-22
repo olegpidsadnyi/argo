@@ -13,7 +13,7 @@ Argo
 
 Python HAL generation/parsing library.
 
-Halogen takes the advantage of the declarative style serialization with easily extendable schemas.
+argo takes the advantage of the declarative style serialization with easily extendable schemas.
 Schema combines the knowledge about your data model, attribute mapping and advanced accessing, with
 complex types and data transformation.
 
@@ -52,10 +52,10 @@ Dictionary values are automatically accessed by the schema attributes using thei
 
 .. code-block:: python
 
-    import halogen
+    import argo
 
-    class Hello(halogen.Schema):
-        hello = halogen.Attr()
+    class Hello(argo.Schema):
+        hello = argo.Attr()
 
 
     serialized = Hello.serialize({"hello": "Hello World"})
@@ -78,7 +78,7 @@ HAL example:
 
 .. code-block:: python
 
-    import halogen
+    import argo
     from flask import url_for
 
     spell = {
@@ -87,10 +87,10 @@ HAL example:
         "cost": 10,
     }
 
-    class Spell(halogen.Schema):
+    class Spell(argo.Schema):
 
-        self = halogen.Link(attr=lambda spell: url_for("spell.get" uid=spell['uid']))
-        name = halogen.Attr()
+        self = argo.Link(attr=lambda spell: url_for("spell.get" uid=spell['uid']))
+        name = argo.Attr()
 
     serialized = Spell.serialize(spell)
 
@@ -113,7 +113,7 @@ Similar to dictionary keys the schema attributes can also access object properti
 
 .. code-block:: python
 
-    import halogen
+    import argo
     from flask import url_for
 
     class Spell(object):
@@ -123,9 +123,9 @@ Similar to dictionary keys the schema attributes can also access object properti
 
     spell = Spell()
 
-    class SpellSchema(halogen.Schema):
-        self = halogen.Link(attr=lambda spell: url_for("spell.get" uid=spell.uid))
-        name = halogen.Attr()
+    class SpellSchema(argo.Schema):
+        self = argo.Link(attr=lambda spell: url_for("spell.get" uid=spell.uid))
+        name = argo.Attr()
 
     serialized = SpellSchema.serialize(spell)
 
@@ -156,7 +156,7 @@ Example:
 
 .. code-block:: python
 
-    import halogen
+    import argo
     from flask import url_for
 
     class Spell(object):
@@ -166,9 +166,9 @@ Example:
 
     spell = Spell()
 
-    class SpellSchema(halogen.Schema):
-        self = halogen.Link(attr=lambda spell: url_for("spell.get" uid=spell.uid))
-        name = halogen.Attr()
+    class SpellSchema(argo.Schema):
+        self = argo.Link(attr=lambda spell: url_for("spell.get" uid=spell.uid))
+        name = argo.Attr()
 
     serialized = SpellSchema.serialize(spell)
 
@@ -188,12 +188,12 @@ Attr("const")
 ~~~~~~~~~~~~~
 
 In case the attribute represents a constant the value can be specified as a first parameter. This first parameter
-is a type of the attribute. If the type is not a instance or subclass of a ``halogen.types.Type`` it will
+is a type of the attribute. If the type is not a instance or subclass of a ``argo.types.Type`` it will
 be bypassed.
 
 .. code-block:: python
 
-    import halogen
+    import argo
     from flask import url_for
 
     class Spell(object):
@@ -203,9 +203,9 @@ be bypassed.
 
     spell = Spell()
 
-    class SpellSchema(halogen.Schema):
-        self = halogen.Link(attr=lambda spell: url_for("spell.get" uid=spell.uid))
-        name = halogen.Attr("custom name")
+    class SpellSchema(argo.Schema):
+        self = argo.Link(attr=lambda spell: url_for("spell.get" uid=spell.uid))
+        name = argo.Attr("custom name")
 
     serialized = SpellSchema.serialize(spell)
 
@@ -229,7 +229,7 @@ In case the attribute name doesn't correspond your model you can override it:
 
 .. code-block:: python
 
-    import halogen
+    import argo
     from flask import url_for
 
     class Spell(object):
@@ -239,9 +239,9 @@ In case the attribute name doesn't correspond your model you can override it:
 
     spell = Spell()
 
-    class SpellSchema(halogen.Schema):
-        self = halogen.Link(attr=lambda spell: url_for("spell.get" uid=spell.uid))
-        name = halogen.Attr(attr="title")
+    class SpellSchema(argo.Schema):
+        self = argo.Link(attr=lambda spell: url_for("spell.get" uid=spell.uid))
+        name = argo.Attr(attr="title")
 
     serialized = SpellSchema.serialize(spell)
 
@@ -262,10 +262,10 @@ This works for both: nested dictionaries or related objects an Python properties
 
 .. code-block:: python
 
-    import halogen
+    import argo
 
-    class SpellSchema(halogen.Schema):
-        name = halogen.Attr(attr="path.to.my.attribute")
+    class SpellSchema(argo.Schema):
+        name = argo.Attr(attr="path.to.my.attribute")
 
 
 Attr(attr=lambda value: value)
@@ -277,7 +277,7 @@ also can be just a constant.
 
 .. code-block:: python
 
-    import halogen
+    import argo
     from flask import url_for
 
     class Spell(object):
@@ -287,9 +287,9 @@ also can be just a constant.
 
     spell = Spell()
 
-    class SpellSchema(halogen.Schema):
-        self = halogen.Link(attr=lambda spell: url_for("spell.get" uid=spell.uid))
-        name = halogen.Attr(attr=lambda value: value.title)
+    class SpellSchema(argo.Schema):
+        self = argo.Link(attr=lambda spell: url_for("spell.get" uid=spell.uid))
+        name = argo.Attr(attr=lambda value: value.title)
 
     serialized = SpellSchema.serialize(spell)
 
@@ -307,7 +307,7 @@ Result:
 Attr(attr=Acccessor)
 ~~~~~~~~~~~~~~~~~~~~
 
-In case the schema is used for both directions to serialize and to deserialize the ``halogen.schema.Accessor``
+In case the schema is used for both directions to serialize and to deserialize the ``argo.schema.Accessor``
 can be passed with both ``getter`` and ``setter`` specified.
 ``Getter`` is a string or callable in order to get the value from a model, and ``setter`` is a string or callable
 that knows where the deserialized value should be stored.
@@ -318,14 +318,14 @@ Attr(Type())
 ~~~~~~~~~~~~
 
 After the attibute gets the value it passes it to it's type in order to complete the serialization.
-Halogen provides basic types for example ``halogen.types.List`` to implement lists of values or schemas.
+argo provides basic types for example ``argo.types.List`` to implement lists of values or schemas.
 Schema is also a Type and can be passed to the attribute to implement complex structures.
 
 Example:
 
 .. code-block:: python
 
-    import halogen
+    import argo
     from flask import url_for
 
     class Book(object):
@@ -339,14 +339,14 @@ Example:
 
     book = Book()
 
-    class GenreSchema(halogen.Schema):
-        self = halogen.Link(attr=lambda genre: url_for("genre.get" uid=genre['uid']))
-        title = halogen.Attr()
+    class GenreSchema(argo.Schema):
+        self = argo.Link(attr=lambda genre: url_for("genre.get" uid=genre['uid']))
+        title = argo.Attr()
 
-    class BookSchema(halogen.Schema):
-        self = halogen.Link(attr=lambda book: url_for("book.get" uid=book.uid))
-        title = halogen.Attr()
-        genres = halogen.Attr(halogen.types.List(GenreSchema))
+    class BookSchema(argo.Schema):
+        self = argo.Link(attr=lambda book: url_for("book.get" uid=book.uid))
+        title = argo.Attr()
+        genres = argo.Attr(argo.types.List(GenreSchema))
 
     serialized = BookSchema.serialize(book)
 
@@ -374,7 +374,7 @@ is a base of Schema. It has both serialize() and deserialize() methods that conv
 Unlike Schema types are instantiated. You can configure serialization behavior by passing parameters to
 their constructors while declaring your schema.
 
-Types can raise ``halogen.exceptions.ValidationError`` during deserialization, but serialization
+Types can raise ``argo.exceptions.ValidationError`` during deserialization, but serialization
 expects the value that this type knows how to transform.
 
 Subclassing types
@@ -394,14 +394,14 @@ Example:
 
 .. code-block:: python
 
-    import halogen
+    import argo
 
     class Amount(object):
         currency = "EUR"
         amount = 1
 
 
-    class AmountType(halogen.types.Type):
+    class AmountType(argo.types.Type):
         def serialize(self, value):
 
             if value is None or not isinstance(value, Amount):
@@ -422,10 +422,10 @@ Example:
     product = Product()
 
 
-    class ProductSchema(halogen.Schema):
+    class ProductSchema(argo.Schema):
 
-        name = halogen.Attr()
-        price = halogen.Attr(AmountType())
+        name = argo.Attr()
+        price = argo.Attr(AmountType())
 
     serialized = ProductSchema.serialize(product)
 
@@ -466,29 +466,29 @@ href
 
 The "href" property is REQUIRED.
 
-``halogen.Link`` will create ``href`` for you. You just need to point to ``halogen.Link`` either from where or
-what ``halogen.Link`` should put into ``href``.
+``argo.Link`` will create ``href`` for you. You just need to point to ``argo.Link`` either from where or
+what ``argo.Link`` should put into ``href``.
 
 1) Static variant
 
 .. code-block:: python
 
-    import halogen
+    import argo
 
-    class EventSchema(halogen.Schema):
+    class EventSchema(argo.Schema):
 
-        artist = halogen.Link(attr="/artists/some-artist")
+        artist = argo.Link(attr="/artists/some-artist")
 
 
 2) Callable variant
 
 .. code-block:: python
 
-    import halogen
+    import argo
 
-    class EventSchema(halogen.Schema):
+    class EventSchema(argo.Schema):
 
-        help = halogen.Link(attr=lambda: current_app.config['DOC_URL'])
+        help = argo.Link(attr=lambda: current_app.config['DOC_URL'])
 
 CURIE
 ~~~~~
@@ -497,17 +497,17 @@ CURIEs are providing links to the resource documentation.
 
 .. code-block:: python
 
-    import halogen
+    import argo
 
-    doc = halogen.Curie(
+    doc = argo.Curie(
         name="doc,
         href="http://haltalk.herokuapp.com/docs/{rel}",
         templated=True
     )
 
-    class BlogSchema(halogen.Schema):
+    class BlogSchema(argo.Schema):
 
-        lastest_post = halogen.Link(attr="/posts/latest", curie=doc)
+        lastest_post = argo.Link(attr="/posts/latest", curie=doc)
 
 
 .. code-block:: json
@@ -532,14 +532,14 @@ Schema also can be a param to link
 
 .. code-block:: python
 
-    import halogen
+    import argo
 
-    class BookLinkSchema(halogen.Schema):
-        href = halogen.Attr("/books")
+    class BookLinkSchema(argo.Schema):
+        href = argo.Attr("/books")
 
-    class BookSchema(halogen.Schema):
+    class BookSchema(argo.Schema):
 
-        books = halogen.Link(BookLinkSchema)
+        books = argo.Link(BookLinkSchema)
 
     serialized = BookSchema.serialize({"books": ""})
 
@@ -563,15 +563,15 @@ defined by [RFC5988]) and values are either a Resource Object or an array of Res
 Embedded Resources MAY be a full, partial, or inconsistent version of
 the representation served from the target URI.
 
-For creating ``_embedded`` in your schema you should use ``halogen.Embedded``.
+For creating ``_embedded`` in your schema you should use ``argo.Embedded``.
 
 Example:
 
 .. code-block:: python
 
-    import halogen
+    import argo
 
-    em = halogen.Curie(
+    em = argo.Curie(
         name="em",
         href="https://docs.event-manager.com/{rel}.html",
         templated=true,
@@ -579,23 +579,23 @@ Example:
     )
 
 
-    class EventSchema(halogen.Schema):
-        self = halogen.Link("/events/activity-event")
-        collection = halogen.Link("/events/activity-event", curie=em)
-        uid = halogen.Attr()
+    class EventSchema(argo.Schema):
+        self = argo.Link("/events/activity-event")
+        collection = argo.Link("/events/activity-event", curie=em)
+        uid = argo.Attr()
 
 
-    class PublicationSchema(halogen.Schema):
-        self = halogen.Link(attr=lambda publication: "/campaigns/activity-campaign/events/activity-event")
-        event = halogen.Link(attr=lambda publication: "/events/activity-event", curie=em)
-        campaign = halogen.Link(attr=lambda publication: "/campaign/activity-event", curie=em)
+    class PublicationSchema(argo.Schema):
+        self = argo.Link(attr=lambda publication: "/campaigns/activity-campaign/events/activity-event")
+        event = argo.Link(attr=lambda publication: "/events/activity-event", curie=em)
+        campaign = argo.Link(attr=lambda publication: "/campaign/activity-event", curie=em)
 
 
-    class EventCollection(halogen.Schema):
-        self = halogen.Link("/events")
-        events = halogen.Embedded(halogen.types.List(EventSchema), attr=lambda collection: collection["events"], curie=em)
-        publications = halogen.Embedded(
-            attr_type=halogen.types.List(PublicationSchema),
+    class EventCollection(argo.Schema):
+        self = argo.Link("/events")
+        events = argo.Embedded(argo.types.List(EventSchema), attr=lambda collection: collection["events"], curie=em)
+        publications = argo.Embedded(
+            attr_type=argo.types.List(PublicationSchema),
             attr=lambda collection: collection["publications"],
             curie=em
         )
@@ -679,10 +679,10 @@ Example:
 
 .. code-block:: python
 
-    import halogen
+    import argo
 
-    class Hello(halogen.Schema):
-        hello = halogen.Attr()
+    class Hello(argo.Schema):
+        hello = argo.Attr()
 
     result = Hello.deserialize({"hello": "Hello World"})
     print result
@@ -702,7 +702,7 @@ Example:
 
 .. code-block:: python
 
-    import halogen
+    import argo
 
     class HellMessage(object):
         hello = ""
@@ -711,8 +711,8 @@ Example:
     hello_message = HellMessage()
 
 
-    class Hello(halogen.Schema):
-        hello = halogen.Attr()
+    class Hello(argo.Schema):
+        hello = argo.Attr()
 
 
     Hello.deserialize({"hello": "Hello World"}, hello_message)
@@ -735,7 +735,7 @@ Example:
 
 .. code-block:: python
 
-    import halogen
+    import argo
     import decimal
 
 
@@ -751,7 +751,7 @@ Example:
             return "Amount: {currency} {amount}".format(currency=self.currency, amount=str(self.amount))
 
 
-    class AmountType(halogen.types.Type):
+    class AmountType(argo.types.Type):
 
         def serialize(self, value):
 
@@ -767,9 +767,9 @@ Example:
             return Amount(value["currency"], decimal.Decimal(str(value["amount"])))
 
 
-    class ProductSchema(halogen.Schema):
-        title = halogen.Attr()
-        price = halogen.Attr(AmountType())
+    class ProductSchema(argo.Schema):
+        title = argo.Attr()
+        price = argo.Attr(AmountType())
 
 
     product = ProductSchema.deserialize({"title": "Pencil", "price": {"currency": "EUR", "amount": 0.30}})

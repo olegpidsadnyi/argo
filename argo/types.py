@@ -5,14 +5,35 @@ class Type(object):
 
     """Base class for creating types."""
 
-    @classmethod
-    def serialize(cls, value):
-        """Serialization of the value."""
+    def __init__(self, validators=None, *args, **kwargs):
+        """Type constructor.
+
+        :param validators: A list of :class:`argo.validators.Validator` objects that check the validity of the
+            deserialized value. Validators raise :class:`argo.exception.ValidationError` exceptions when
+            value is not valid.
+        """
+        self.validators = validators or []
+
+    def serialize(self, value):
+        """Serialization of the value.
+
+        :param value: Value to serialize.
+        :return: Serialized value.
+        """
         return value
 
-    @classmethod
-    def deserialize(cls, value):
-        """Deserialization of the value."""
+    def deserialize(self, value):
+        """Deserialization of the value.
+
+        :param value: Value to deserialize.
+
+        :return: Deserialized value.
+        :raises: :class:`argo.exception.ValidationError` when value is not valid.
+        """
+        if value is not None:
+            for validator in self.validators:
+                validator.validate(value)
+
         return value
 
     @staticmethod
