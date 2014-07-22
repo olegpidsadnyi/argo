@@ -51,7 +51,7 @@ class List(Type):
     def __init__(self, item_type=None):
         """Create a new List."""
         super(List, self).__init__()
-        self.item_type = item_type or Type
+        self.item_type = item_type or Type()
 
     def serialize(self, value, **kwargs):
         """Overrided serialize for returning list of value's items."""
