@@ -30,9 +30,8 @@ class Type(object):
         :return: Deserialized value.
         :raises: :class:`argo.exception.ValidationError` when value is not valid.
         """
-        if value is not None:
-            for validator in self.validators:
-                validator.validate(value)
+        for validator in self.validators:
+            validator.validate(value)
 
         return value
 
@@ -56,3 +55,8 @@ class List(Type):
     def serialize(self, value, **kwargs):
         """Overrided serialize for returning list of value's items."""
         return [self.item_type.serialize(val, **kwargs) for val in value]
+
+
+class String(Type):
+
+    """String type."""
