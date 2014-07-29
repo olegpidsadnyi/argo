@@ -1,7 +1,5 @@
 """Argo exceptions."""
 
-import json
-
 
 class ValidationError(Exception):
 
@@ -14,26 +12,14 @@ class ValidationError(Exception):
         else:
             self.errors = [errors]
 
+    @staticmethod
+    def dump(error):
+        if isinstance(error, ValidationError):
+            return error.to_dict()
+        return error
+
     def to_dict(self):
-        """Dictionary representation of the error.
-
-        :return: A dict with the keys:
-            - attr: Attribute which contains the error, or "<root>" if it refers to the schema root.
-            - errors: A list of dictionary representations of the errors.
-        """
-        def exception_to_dict(e):
-            try:
-                return e.to_dict()
-            except AttributeError:
-                return {
-                    "type": e.__class__.__name__,
-                    "error": str(e)
-                }
-
+        """Dictionary representation of the error."""
         return {
-            "attr": self.attr if self.attr is not None else "<root>",
-            "errors": [exception_to_dict(e) for e in self.errors]
+            "errors": dict((e.attr, [self.dump(error) for error in e.errors]) for e in self.errors),
         }
-
-    def __str__(self):
-        return json.dumps(self.to_dict())
